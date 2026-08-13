@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Personal Blog - Thoughts, Code & Stories{% endblock %}</title>
+  <meta name="description"
+    content="{% block description %}A personal blog built with Python and Flask, focusing on clean engineering and insightful writing.{% endblock %}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="{{ url_for('index') }}" class="brand-logo">
+        <span>✍️</span>
+        <span class="brand-gradient">DevJourney</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('index') }}" class="nav-link">Articles</a></li>
+          {% if is_admin %}
+          <li><a href="{{ url_for('admin_dashboard') }}" class="nav-link">Dashboard</a></li>
+          <li><a href="{{ url_for('admin_new_article') }}" class="nav-link">+ New Post</a></li>
+          <li><span class="admin-badge">{{ admin_username }}</span></li>
+          <li><a href="{{ url_for('logout') }}" class="nav-link">Logout</a></li>
+          {% else %}
+          <li><a href="{{ url_for('login') }}" class="nav-link">Admin Login</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Flash Messages Notifications -->
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        <span>{{ message }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Main Content Block -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <p>&copy; {{ current_year }} <strong>DevJourney Blog</strong>. Powered by Python, Flask & Filesystem Storage.</p>
+      <p><small>Built with clean server-side rendering and minimal dependencies.</small></p>
+    </div>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+
+</html>

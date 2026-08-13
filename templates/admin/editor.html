@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if mode == 'create' %}Create New Article{% else %}Edit Article: {{ article.title }}{% endif %} - DevJourney Admin
+{% endblock %}
+
+{% block content %}
+<div class="container container-narrow" style="padding: 3rem 1.5rem 5rem;">
+  <!-- Header -->
+  <div style="margin-bottom: 2rem;">
+    <a href="{{ url_for('admin_dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+    <h1 style="font-size: 2.2rem; font-weight: 800; margin-top: 0.5rem;">
+      {% if mode == 'create' %}✍️ Write New Article{% else %}✏️ Edit Article{% endif %}
+    </h1>
+    <p style="color: var(--text-secondary); font-size: 0.95rem;">
+      {% if mode == 'create' %}
+        Compose a new article. A JSON file will be created automatically in your articles directory.
+      {% else %}
+        Update article content or metadata. Changes will be saved directly to the JSON file.
+      {% endif %}
+    </p>
+  </div>
+
+  <!-- Form -->
+  <form
+    method="POST"
+    action="{% if mode == 'create' %}{{ url_for('admin_new_article') }}{% else %}{{ url_for('admin_edit_article', slug=original_slug or article.slug) }}{% endif %}"
+    class="form-card"
+  >
+    <!-- Title -->
+    <div class="form-group">
+      <label for="title" class="form-label">Article Title <span style="color: var(--danger);">*</span></label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        class="form-control"
+        value="{{ article.title }}"
+        placeholder="e.g., Building a Blog with Python and Filesystem Storage"
+        required
+        autofocus
+      >
+    </div>
+
+    <!-- Slug & Publication Date Row -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="slug" class="form-label">URL Slug</label>
+        <input
+          type="text"
+          id="slug"
+          name="slug"
+          class="form-control"
+          value="{{ article.slug }}"
+          placeholder="e.g., building-a-blog-with-python"
+        >
+        <div class="form-help">Leave blank to auto-generate from title.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="date" class="form-label">Publication Date</label>
+        <input
+          type="date"
+          id="date"
+          name="date"
+          class="form-control"
+          value="{{ article.date }}"
+          required
+        >
+        <div class="form-help">Format: YYYY-MM-DD</div>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="form-group">
+      <label for="tags" class="form-label">Tags</label>
+      <input
+        type="text"
+        id="tags"
+        name="tags"
+        class="form-control"
+        value="{{ article.tags | join(', ') if article.tags is iterable and article.tags is not string else article.tags }}"
+        placeholder="Python, Flask, Backend, Tutorials"
+      >
+      <div class="form-help">Comma-separated list of tags.</div>
+    </div>
+
+    <!-- Summary -->
+    <div class="form-group">
+      <label for="summary" class="form-label">Summary / Excerpt</label>
+      <textarea
+        id="summary"
+        name="summary"
+        class="form-control"
+        rows="2"
+        placeholder="A brief 1-2 sentence description shown on the article feed..."
+      >{{ article.summary }}</textarea>
+      <div class="form-help">Leave blank to auto-generate from the first paragraph of content.</div>
+    </div>
+
+    <!-- Content -->
+    <div class="form-group">
+      <label for="content" class="form-label">Content <span style="color: var(--danger);">*</span></label>
+      <textarea
+        id="content"
+        name="content"
+        class="form-control form-control-editor"
+        placeholder="Write your article here... Supports Markdown headings (###), bold (**text**), lists (- item), and code blocks (```code```)..."
+        required
+      >{{ article.content }}</textarea>
+    </div>
+
+    <!-- Formatting Tips Helper Box -->
+    <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); padding: 1rem 1.25rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.75rem;">
+      <strong style="color: var(--text-primary); display: block; margin-bottom: 0.35rem;">💡 Formatting Shortcuts Supported:</strong>
+      <ul style="margin: 0; padding-left: 1.25rem; line-height: 1.5;">
+        <li><code># Heading 1</code>, <code>## Heading 2</code>, <code>### Heading 3</code></li>
+        <li><code>**bold text**</code> and <code>`inline code`</code></li>
+        <li><code>- Bullet item</code> or <code>1. Numbered item</code></li>
+        <li><code>```python\nprint("Hello World")\n```</code> for code blocks</li>
+      </ul>
+    </div>
+
+    <!-- Form Actions -->
+    <div style="display: flex; gap: 1rem; justify-content: flex-end; align-items: center;">
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+      <button type="submit" class="btn btn-primary">
+        {% if mode == 'create' %}🚀 Publish Article{% else %}💾 Save Changes{% endif %}
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}DevJourney - Personal Engineering Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="hero-title">Thoughts, Code & <span class="brand-gradient">Craftsmanship</span></h1>
+    <p class="hero-subtitle">Exploring software architecture, Python development, backend systems, and clean code.</p>
+  </section>
+
+  <!-- Search & Tag Filtering -->
+  <section class="search-filter-bar">
+    <form action="{{ url_for('index') }}" method="GET" class="search-form">
+      {% if active_tag %}
+        <input type="hidden" name="tag" value="{{ active_tag }}">
+      {% endif %}
+      <input
+        type="text"
+        name="q"
+        placeholder="Search articles by title, content, or summary..."
+        value="{{ search_query }}"
+        class="search-input"
+        aria-label="Search articles"
+      >
+      <button type="submit" class="btn btn-primary">Search</button>
+      {% if search_query or active_tag %}
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Clear</a>
+      {% endif %}
+    </form>
+
+    {% if all_tags %}
+      <div class="tags-filter">
+        <span class="tag-label">Filter by Tag:</span>
+        <a href="{{ url_for('index', q=search_query if search_query else None) }}" class="tag-pill {% if not active_tag %}active{% endif %}">All</a>
+        {% for tag in all_tags %}
+          <a
+            href="{{ url_for('index', tag=tag, q=search_query if search_query else None) }}"
+            class="tag-pill {% if active_tag == tag %}active{% endif %}"
+          >
+            #{{ tag }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- Articles Feed -->
+  <section class="article-grid">
+    {% if articles %}
+      {% for article in articles %}
+        <article class="article-card">
+          <div class="article-card-header">
+            <div class="article-meta">
+              <time datetime="{{ article.date }}">{{ article.date | format_date }}</time>
+              <span class="meta-dot">&bull;</span>
+              <span>{{ article.reading_time or 1 }} min read</span>
+            </div>
+            <h2 class="article-title">
+              <a href="{{ url_for('article_detail', slug=article.slug) }}">{{ article.title }}</a>
+            </h2>
+          </div>
+
+          <p class="article-excerpt">{{ article.summary }}</p>
+
+          <div class="article-card-footer">
+            <div class="card-tags">
+              {% for tag in article.tags %}
+                <a href="{{ url_for('index', tag=tag) }}" class="tag-badge">#{{ tag }}</a>
+              {% endfor %}
+            </div>
+            <a href="{{ url_for('article_detail', slug=article.slug) }}" class="read-more-link">
+              Read Article &rarr;
+            </a>
+          </div>
+        </article>
+      {% endfor %}
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-state-icon">📝</div>
+        <h3 class="empty-state-title">No Articles Found</h3>
+        <p class="empty-state-text">
+          {% if search_query or active_tag %}
+            No articles matched your search or tag criteria. Try clearing filters or searching for something else.
+          {% else %}
+            No articles have been published yet. Log in to the admin dashboard to create the first post!
+          {% endif %}
+        </p>
+        {% if search_query or active_tag %}
+          <a href="{{ url_for('index') }}" class="btn btn-primary">View All Posts</a>
+        {% elif is_admin %}
+          <a href="{{ url_for('admin_new_article') }}" class="btn btn-primary">+ Create New Article</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

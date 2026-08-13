@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - DevJourney Blog{% endblock %}
+
+{% block content %}
+<div class="container container-narrow" style="padding: 4rem 1.5rem 6rem;">
+  <div class="form-card" style="max-width: 440px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔐</div>
+      <h1 style="font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem;">Admin Login</h1>
+      <p style="color: var(--text-secondary); font-size: 0.9rem;">Authenticate to manage blog articles.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('login', next=request.args.get('next')) }}">
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          class="form-control"
+          placeholder="admin"
+          required
+          autofocus
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          placeholder="••••••••"
+          required
+        >
+      </div>
+
+      <div style="background: var(--bg-surface-elevated); padding: 0.8rem 1rem; border-radius: var(--radius-md); font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+        💡 <strong>Default Demo Credentials:</strong><br>
+        Username: <code>admin</code> | Password: <code>admin123</code>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

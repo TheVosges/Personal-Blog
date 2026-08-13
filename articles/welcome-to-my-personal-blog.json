@@ -1,0 +1,14 @@
+{
+  "title": "Welcome to My Personal Blog",
+  "slug": "welcome-to-my-personal-blog",
+  "date": "2026-08-13",
+  "summary": "Welcome to my new personal blog! Here I will share my thoughts, software engineering tutorials, and lessons learned while coding.",
+  "content": "Welcome to my personal blog!\r\n\r\nThis platform was built from the ground up using Python, Flask, and a lightweight filesystem-based storage architecture. Instead of relying on a heavyweight relational database, articles are stored as structured JSON files directly on disk.\r\n\r\n### Why Build a Personal Blog?\r\n\r\n1. **Learning by Doing**: Implementing server-rendered HTML, form handling, session authentication, and filesystem operations is one of the best ways to master backend fundamentals.\r\n2. **Simplicity & Speed**: Zero external database dependencies make deployment and local development fast and portable.\r\n3. **Full Creative Control**: Complete ownership over design, typography, performance, and features.\r\n\r\nStay tuned for upcoming posts on Python programming, clean code, design patterns, and full-stack software development!",
+  "tags": [
+    "General",
+    "Introduction",
+    "Python"
+  ],
+  "reading_time": 1,
+  "updated_at": "2026-08-13T22:25:33.661485"
+}

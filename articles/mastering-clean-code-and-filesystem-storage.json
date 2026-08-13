@@ -1,0 +1,14 @@
+{
+  "title": "Mastering Clean Code and Filesystem Storage",
+  "slug": "mastering-clean-code-and-filesystem-storage",
+  "date": "2026-08-05",
+  "summary": "When is a database overkill? Exploring how structured filesystem persistence offers simplicity, version control friendliness, and rock-solid reliability for small-to-medium scale applications.",
+  "content": "In modern software development, our default instinct is often to reach for a database—PostgreSQL, MySQL, SQLite, or MongoDB. But for static sites, documentation portals, and personal blogs, the filesystem is often all you need.\n\n### Benefits of Flat-File Storage\n\n1. **Version Control Integration**: Storing articles as JSON or Markdown means your content can live directly in Git alongside your code.\n2. **Zero Maintenance**: No connection pools to configure, no migration scripts to execute, and no database servers to patch.\n3. **Effortless Backups**: Backing up your content is as simple as copying a directory or committing to a repository.\n4. **Inspectability**: You can open, inspect, and edit any post using standard text editors or command-line tools like `cat` and `grep`.\n\n### Design Considerations\n\nWhen using filesystem storage, always sanitize file paths to prevent directory traversal attacks, format dates in ISO 8601 for reliable lexical sorting, and handle file read/write exceptions cleanly.",
+  "tags": [
+    "CleanCode",
+    "Architecture",
+    "BestPractices"
+  ],
+  "reading_time": 2,
+  "updated_at": "2026-08-05T09:15:00"
+}

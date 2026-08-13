@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - DevJourney Blog{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 3rem 1.5rem 5rem;">
+  <!-- Admin Header -->
+  <div class="admin-header">
+    <div>
+      <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem;">Admin Dashboard</h1>
+      <p style="color: var(--text-secondary); font-size: 0.95rem;">Manage, publish, and edit your filesystem-stored articles.</p>
+    </div>
+    <div>
+      <a href="{{ url_for('admin_new_article') }}" class="btn btn-primary">
+        + Create New Article
+      </a>
+    </div>
+  </div>
+
+  <!-- Articles Data Table -->
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Title & Slug</th>
+          <th>Date</th>
+          <th>Tags</th>
+          <th>Read Time</th>
+          <th style="text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if articles %}
+          {% for article in articles %}
+            <tr>
+              <td>
+                <div style="font-weight: 600; color: var(--text-primary);">
+                  {{ article.title }}
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);">
+                  /article/{{ article.slug }}
+                </div>
+              </td>
+              <td>
+                <time datetime="{{ article.date }}" style="color: var(--text-secondary); font-size: 0.88rem;">
+                  {{ article.date | format_date }}
+                </time>
+              </td>
+              <td>
+                <div class="card-tags">
+                  {% for tag in article.tags %}
+                    <span class="tag-badge">#{{ tag }}</span>
+                  {% else %}
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">None</span>
+                  {% endfor %}
+                </div>
+              </td>
+              <td style="color: var(--text-secondary); font-size: 0.88rem;">
+                {{ article.reading_time or 1 }} min
+              </td>
+              <td>
+                <div class="table-actions" style="justify-content: flex-end;">
+                  <a href="{{ url_for('article_detail', slug=article.slug) }}" class="btn btn-secondary btn-sm" title="View Public Post">
+                    👁️ View
+                  </a>
+                  <a href="{{ url_for('admin_edit_article', slug=article.slug) }}" class="btn btn-secondary btn-sm" title="Edit Post">
+                    ✏️ Edit
+                  </a>
+                  <form action="{{ url_for('admin_delete_article', slug=article.slug) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete \'{{ article.title }}\'? This action deletes the file permanently.');">
+                    <button type="submit" class="btn btn-danger btn-sm" title="Delete Post">
+                      🗑️
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+              No articles found. Click "Create New Article" to write your first post!
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Server Error | DevJourney Blog{% endblock %}
+
+{% block content %}
+<div class="container container-narrow" style="padding: 6rem 1.5rem; text-align: center;">
+  <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
+  <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.75rem;">500 - Internal Server Error</h1>
+  <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 500px; margin: 0 auto 2rem;">
+    Something unexpected happened on our server. Please try refreshing or return to the home page.
+  </p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary">&larr; Return to Home Feed</a>
+</div>
+{% endblock %}
